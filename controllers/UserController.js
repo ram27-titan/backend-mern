@@ -1,6 +1,6 @@
-import User from '../models/UserModel.js';
+const Product = require('../models/UserModel');
 
-export const getUsers = async (req, res) => {
+exports.getUsers = async (req, res) => {
   try {
     const users = await User.find();
     res.json(users);
@@ -9,7 +9,7 @@ export const getUsers = async (req, res) => {
   }
 };
 
-export const getUserById = async (req, res) => {
+exports.getUserById = async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
     res.json(user);
@@ -18,17 +18,16 @@ export const getUserById = async (req, res) => {
   }
 };
 
-export const postUser = async (req, res) => {
-  const user = new User(req.body);
+exports.postUser = async (req, res) => {
+  const user = await User.create(req.body);
   try {
-    const inserteduser = await user.save();
-    res.status(201).json(inserteduser);
+    res.status(201);
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
 };
 
-export const updateUser = async (req, res) => {
+exports.updateUser = async (req, res) => {
   try {
     const updateuser = await User.updateOne({ _id: req.params.id }, { $set: req.body });
     res.status(200).json(updateuser);
@@ -37,7 +36,7 @@ export const updateUser = async (req, res) => {
   }
 };
 
-export const deleteUser = async (req, res) => {
+exports.deleteUser = async (req, res) => {
   try {
     const deleteduser = await User.deleteOne({ _id: req.params.id });
     res.status(200).json(deleteduser);
